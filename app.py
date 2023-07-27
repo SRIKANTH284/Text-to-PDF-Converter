@@ -2,7 +2,10 @@ import streamlit as st
 from fpdf import FPDF
 import base64
 
-report_text = st.text_input("Report Text")
+# Center-align the components on the page
+st.set_page_config(layout="centered")
+
+report_text = st.text_area("Report Text", height=200)
 
 export_as_pdf = st.button("Export Report")
 
@@ -14,8 +17,8 @@ if export_as_pdf:
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font('Arial', 'B', 16)
-    pdf.cell(40, 10, report_text)
-    
+    pdf.multi_cell(0, 10, report_text)  # Allow multi-line text in the PDF
+
     pdf_output = pdf.output(dest="S").encode("latin-1")
     html = create_download_link(pdf_output, "test")
 
